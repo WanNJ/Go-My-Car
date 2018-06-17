@@ -1,3 +1,6 @@
+**/.texpadtmp
+Docs/*.pdf
+
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
