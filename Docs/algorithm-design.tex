@@ -140,7 +140,44 @@ $$
 
 此PID系统的目标相对来说比较简单，即控制$\theta$和$\Delta D$均为0。
 
-但具体的参数设定，和对小车运动的建模还需在实践中不断细化。
+\subsubsection{角度控制}
+
+经计算可得，在理想情况下，小车的角速度为：
+
+$$
+\omega = \frac{V_L - V_R}{L}
+$$
+
+其中，$V_L$是左后车轮速度，$V_R$是右后车轮速度，$L$是两车轮间距。设小车偏移角随时间的变化函数为$\theta(t)$，则有：
+
+$$
+\theta(t) = \theta_0 + \omega t
+$$
+
+我们首先采用简单的P控制器，及我们对小车角速度的控制与误差$\epsilon$成正比，设比例系数为$K$，则有：
+
+$$
+\begin{cases}
+\epsilon = \theta(t) - \phi \\
+\omega = K\epsilon
+\end{cases}
+$$
+
+其中，$\phi$是我们希望的偏移角，在这里，$\phi = 0$，则有：
+
+$$
+\omega = K \theta(t)
+$$
+
+系数$K$的单位是$/s$，则有：
+
+$$
+\theta(t) = \frac{\theta_0}{1 - Kt}
+$$
+
+可知，$K$越大，$\theta$收敛得越快。
+
+\subsubsection{水平偏移量控制}
 
 \newpage
 
