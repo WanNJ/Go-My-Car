@@ -15,6 +15,7 @@ using namespace cv;
 using namespace std;
 
 const string CAM_PATH="/dev/video0";
+const string ORIGINAL_WINDOW_NAME="Original Image";
 const string MAIN_WINDOW_NAME="Processed Image";
 const string CANNY_WINDOW_NAME="Canny";
 
@@ -43,14 +44,18 @@ int main()
 			break;
 
 		//Set the ROI for the image
+		Rect origin(0, 0, image.cols, image.rows);
 		Rect roi(0,image.rows/3,image.cols,image.rows/3);
+		Mat imgRaw=image(origin);
 		Mat imgROI=image(roi);
+
 
 		//Canny algorithm
 		Mat contours;
 		Canny(imgROI,contours,CANNY_LOWER_BOUND,CANNY_UPPER_BOUND);
 		#ifdef _DEBUG
-		imshow(CANNY_WINDOW_NAME,contours);
+		imshow(ORIGINAL_WINDOW_NAME, origin);
+		imshow(CANNY_WINDOW_NAME, contours);
 		#endif
 
 		vector<Vec2f> lines;
