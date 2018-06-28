@@ -43,37 +43,39 @@ int main()
 		if(image.empty())
 			break;
 
-		//Set the ROI for the image
+		// Get the original image.
 		Rect origin(0, 0, image.cols, image.rows);
-		Rect roi(0,image.rows/3,image.cols,image.rows/3);
 		Mat imgRaw=image(origin);
+
+		// Set the ROI for the image to be the bottom 1/3 of the image.
+		Rect roi(0, 2 * image.rows/3, image.cols, image.rows/3);
 		Mat imgROI=image(roi);
 
 
 		//Canny algorithm
 		Mat contours;
-		Canny(imgROI,contours,CANNY_LOWER_BOUND,CANNY_UPPER_BOUND);
+		Canny(imgROI, contours, CANNY_LOWER_BOUND, CANNY_UPPER_BOUND);
 		#ifdef _DEBUG
-		imshow(ORIGINAL_WINDOW_NAME, origin);
+		imshow(ORIGINAL_WINDOW_NAME, imgRaw);
 		imshow(CANNY_WINDOW_NAME, contours);
 		#endif
 
 		vector<Vec2f> lines;
-		HoughLines(contours,lines,1,PI/180,HOUGH_THRESHOLD);
-		Mat result(imgROI.size(),CV_8U,Scalar(255));
+		HoughLines(contours, lines, 1, PI/180, HOUGH_THRESHOLD);
+		Mat result(imgROI.size(), CV_8U, Scalar(255));
 		imgROI.copyTo(result);
-		clog<<lines.size()<<endl;
+		clog << lines.size() << endl;
 		
-		float maxRad=-2*PI;
-		float minRad=2*PI;
+		float maxRad = -2*PI;
+		float minRad = 2*PI;
 		//Draw the lines and judge the slope
-		for(vector<Vec2f>::const_iterator it=lines.begin();it!=lines.end();++it)
+		for(vector<Vec2f>::const_iterator it = lines.begin(); it != lines.end(); it++)
 		{
-			float rho=(*it)[0];			//First element is distance rho
-			float theta=(*it)[1];		//Second element is angle theta
+			float rho=(*it)[0];			// First element is distance rho
+			float theta=(*it)[1];		// Second element is angle theta
 
-			//Filter to remove vertical and horizontal lines,
-			//and atan(0.09) equals about 5 degrees.
+			// Filter to remove vertical and horizontal lines,
+			// and atan(0.09) equals about 5 degrees.
 			if((theta>0.09&&theta<1.48)||(theta>1.62&&theta<3.05))
 			{
 				if(theta>maxRad)
@@ -92,15 +94,16 @@ int main()
 			}
 
 			#ifdef _DEBUG
-			clog<<"Line: ("<<rho<<","<<theta<<")\n";
+			clog << "Line: ("<<rho<<","<<theta<<")\n";
 			#endif
 		}
 
 		#ifdef _DEBUG
+		// Show line number on the graphic interface.
 		stringstream overlayedText;
-		overlayedText<<"Lines: "<<lines.size();
-		putText(result,overlayedText.str(),Point(10,result.rows-10),2,0.8,Scalar(0,0,255),0);
-		imshow(MAIN_WINDOW_NAME,result);
+		overlayedText << "Lines: " << lines.size();
+		putText(result, overlayedText.str(), Point(10,result.rows-10), 2, 0.8, Scalar(0,0,255),0);
+		imshow(MAIN_WINDOW_NAME, result);
 		#endif
 
 		lines.clear();
