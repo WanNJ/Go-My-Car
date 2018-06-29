@@ -33,6 +33,7 @@ int main() {
         capture.open(atoi(CAM_PATH.c_str()));
     }
 
+    // 640 X 480
     double frameWidth = capture.get(CV_CAP_PROP_FRAME_WIDTH);			// The width of frames of the video.
     double frameHeight = capture.get(CV_CAP_PROP_FRAME_HEIGHT);		// The height of frames of the video.
     clog << "Frame Size: " << frameWidth << " X " << frameHeight << endl;
@@ -42,9 +43,6 @@ int main() {
     Mat processedImage;
     vector<NormalLine> lines;
 
-    capture >> originalImage;
-
-    clog << "Picture Size: " << originalImage.cols << " X " << originalImage.rows << endl;
     // Set the ROI for the image to be the bottom 1/3 of the image.
     Rect roi(0, 2*originalImage.rows/3, originalImage.rows, originalImage.cols/3);
     // Initialize the preprocessing class.
@@ -58,7 +56,10 @@ int main() {
         process.allInOnce(originalImage, processedImage, lines);
 
         #ifdef _DEBUG
-        imshow(ORIGINAL_WINDOW_NAME, originalImage);
+        // Get the original image.
+        Rect origin(0, 0, static_cast<int>(frameWidth), static_cast<int>(frameHeight));
+        Mat imgRaw = originalImage(origin);
+        imshow(ORIGINAL_WINDOW_NAME, imgRaw);
         imshow(PROCESSED_WINDOW_NAME, processedImage);
 
         // Print out the line
