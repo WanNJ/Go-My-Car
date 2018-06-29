@@ -34,7 +34,7 @@ int main() {
 
     double frameWidth = capture.get(CV_CAP_PROP_FRAME_WIDTH);			// The width of frames of the video.
     double frameHeight = capture.get(CV_CAP_PROP_FRAME_HEIGHT);		// The height of frames of the video.
-    clog << "Frame Size: " << frameWidth << " x " << frameHeight << endl;
+    clog << "Frame Size: " << frameWidth << " X " << frameHeight << endl;
 
     // Initialize the used image mat and line vector.
     Mat originalImage;
@@ -42,6 +42,8 @@ int main() {
     vector<NormalLine> lines;
 
     capture >> originalImage;
+
+    clog << "Picture Size: " << originalImage.cols << " X " << originalImage.rows << endl;
     // Set the ROI for the image to be the bottom 1/3 of the image.
     Rect roi(0, 2*originalImage.rows/3, originalImage.rows, originalImage.cols/3);
     // Initialize the preprocessing class.
