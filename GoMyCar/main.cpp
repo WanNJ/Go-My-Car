@@ -60,9 +60,9 @@ int main() {
 
         #ifdef _DEBUG
         // Get the original image.
-        Rect origin(0, 0, static_cast<int>(frameWidth), static_cast<int>(frameHeight));
-        Mat imgRaw = originalImage(origin);
-        imshow(ORIGINAL_WINDOW_NAME, imgRaw);
+//        Rect origin(0, 0, static_cast<int>(frameWidth), static_cast<int>(frameHeight));
+//        Mat imgRaw = originalImage(origin);
+        imshow(ORIGINAL_WINDOW_NAME, originalImage);
         imshow(PROCESSED_WINDOW_NAME, processedImage);
 
         // Print out the line
