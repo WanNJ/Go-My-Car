@@ -39,7 +39,7 @@ int main()
 	Mat image;
 	while(true)
 	{
-		capture>>image;
+		capture >> image;
 		if(image.empty())
 			break;
 
@@ -75,7 +75,10 @@ int main()
 			float theta=(*it)[1];		// Second element is angle theta
 
 			// Filter to remove vertical and horizontal lines,
-			// and atan(0.09) equals about 5 degrees.
+			// 0.09 rad equals about 5 degrees.
+			// 1.48 rad equals about 85 degrees.
+			// 1.62 rad equals about 93 degrees.
+			// 3.05 rad equals about 175 degrees.
 			if((theta>0.09&&theta<1.48)||(theta>1.62&&theta<3.05))
 			{
 				if(theta>maxRad)
@@ -94,7 +97,7 @@ int main()
 			}
 
 			#ifdef _DEBUG
-			clog << "Line: ("<<rho<<","<<theta<<")\n";
+			clog << "Line: (" << rho << "," << theta << ")\n";
 			#endif
 		}
 
