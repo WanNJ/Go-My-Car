@@ -12,8 +12,10 @@
 
 const string CAM_PATH="/dev/video0";
 const string ORIGINAL_WINDOW_NAME="Original Image";
+const string MIDDLE_WINDOW_NAME="Middle Image";
 const string PROCESSED_WINDOW_NAME="Processed Image";
 
+const int BLUR_SIZE = 5;
 const int CANNY_LOWER_BOUND = 50;
 const int CANNY_UPPER_BOUND = 150;
 const int CANNY_KERNEL_SIZE = 3;
@@ -27,27 +29,29 @@ const double f = 20;
 // TODO How to establish the mapping between photo and the physical world?
 
 int main() {
-    VideoCapture capture(CAM_PATH);
+    VideoCapture capture(0);
     // If this fails, try to open as a video camera, through the use of an integer param
     if (!capture.isOpened()) {
-        capture.open(atoi(CAM_PATH.c_str()));
+        std::cout << "no capture device :(" << endl;
+        return -1;
     }
 
-    // 640 X 480
-    double frameWidth = capture.get(CV_CAP_PROP_FRAME_WIDTH);			// The width of frames of the video.
-    double frameHeight = capture.get(CV_CAP_PROP_FRAME_HEIGHT);		// The height of frames of the video.
+    // 640 X 480 for the course provided camera.
+    auto frameWidth = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));			// The width of frames of the video.
+    auto frameHeight = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));		// The height of frames of the video.
     clog << "Frame Size: " << frameWidth << " X " << frameHeight << endl;
 
     // Initialize the used image mat and line vector.
     Mat originalImage;
     Mat roiImage;
+    Mat middleImage;
     Mat processedImage;
     vector<NormalLine> lines;
 
     // Set the ROI for the image to be the bottom 1/3 of the image.
-    Rect roi(0, 2*originalImage.rows/3, originalImage.rows, originalImage.cols/3);
+    Rect roi(0, 2*frameHeight/3, frameWidth, frameHeight/3);
     // Initialize the preprocessing class.
-    PreProcessing process(CANNY_LOWER_BOUND, CANNY_UPPER_BOUND, CANNY_KERNEL_SIZE, HOUGH_THRESHOLD);
+    PreProcessing process(BLUR_SIZE, CANNY_LOWER_BOUND, CANNY_UPPER_BOUND, CANNY_KERNEL_SIZE, HOUGH_THRESHOLD);
 
     while(true) {
         capture >> originalImage;
@@ -56,13 +60,13 @@ int main() {
 
         // Get ROI.
         roiImage = originalImage(roi);
-        process.allInOnce(roiImage, processedImage, lines);
+        process.grayScalePlusGaussianBlur(roiImage, middleImage);
+        process.getLines(middleImage, processedImage, lines);
 
         #ifdef _DEBUG
         // Get the original image.
-//        Rect origin(0, 0, static_cast<int>(frameWidth), static_cast<int>(frameHeight));
-//        Mat imgRaw = originalImage(origin);
-        imshow(ORIGINAL_WINDOW_NAME, originalImage);
+        imshow(ORIGINAL_WINDOW_NAME, roiImage);
+        imshow(MIDDLE_WINDOW_NAME, middleImage);
         imshow(PROCESSED_WINDOW_NAME, processedImage);
 
         // Print out the line

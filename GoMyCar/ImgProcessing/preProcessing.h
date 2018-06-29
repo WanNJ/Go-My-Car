@@ -14,6 +14,7 @@ using namespace std;
 
 class PreProcessing {
 private:
+    int blurSize;
     int cannyLowerBound;
     int cannyUpperBound;
     int cannyKernelSize;
@@ -33,7 +34,7 @@ public:
     * @param cannyKernel The Kernel Size.
     * @param _houghThreshold How many points is needed at least to identify a line.
     */
-    PreProcessing(int cannyLower, int cannyUpper, int cannyKernel, int _houghThreshold);
+    PreProcessing(int _blurSize, int cannyLower, int cannyUpper, int cannyKernel, int _houghThreshold);
 
     /**
      * Transform the image to gray scale and then apply Gaussian blur to it.

@@ -7,13 +7,15 @@
 
 
 PreProcessing::PreProcessing() {
+    blurSize = 3;
     cannyLowerBound = 50;
     cannyUpperBound = 150;
     cannyKernelSize = 3;
     houghThreshold = 50;
 };
 
-PreProcessing::PreProcessing(int cannyLower, int cannyUpper, int cannyKernel, int _houghThreshold) {
+PreProcessing::PreProcessing(int _blurSize, int cannyLower, int cannyUpper, int cannyKernel, int _houghThreshold) {
+    blurSize = _blurSize;
     cannyLowerBound = cannyLower;
     cannyUpperBound = cannyUpper;
     cannyKernelSize = cannyKernel;
@@ -21,14 +23,15 @@ PreProcessing::PreProcessing(int cannyLower, int cannyUpper, int cannyKernel, in
 }
 
 void PreProcessing::grayScalePlusGaussianBlur(Mat& src, Mat& dst) {
-    cvtColor(src, dst, cv::COLOR_RGB2GRAY);
-    blur(src, dst, Size(3,3) );
+    Mat middle;
+    cvtColor(src, middle, cv::COLOR_RGB2GRAY);
+    blur(middle, dst, Size(blurSize, blurSize));
 }
 
 void PreProcessing::getLines(Mat& src, Mat& dst, vector<NormalLine>& lines) {
     vector<Vec2f> detectedLines;
-
     Canny(src, dst, cannyLowerBound, cannyUpperBound, cannyKernelSize);
+
     /**
      * 1: The resolution of the parameter rho in pixels - using 1 pixel.
      * CV_PI/180: The resolution of the parameter theta in radians - using 1 degree.
