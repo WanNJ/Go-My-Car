@@ -1,9 +1,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "ImgProcessing/preProcessing.h"
 #include <opencv2/highgui.hpp>
 
+#include "ImgProcessing/preProcessing.h"
+#include "utils/coordinateSystem.h"
 
 // Comment this line at run-time to skip GUI rendering.
 #define _DEBUG
@@ -11,6 +12,18 @@
 const string CAM_PATH="/dev/video0";
 const string ORIGINAL_WINDOW_NAME="Original Image";
 const string PROCESSED_WINDOW_NAME="Processed Image";
+
+const int CANNY_LOWER_BOUND = 50;
+const int CANNY_UPPER_BOUND = 150;
+const int CANNY_KERNEL_SIZE = 3;
+const int HOUGH_THRESHOLD = 75;
+
+// H is the height of the camera in centimeters.
+const double H = 7.5;
+// f is the focus length of the camera in centimeters.
+const double f = 20;
+
+// TODO How to establish the mapping between photo and the physical world?
 
 int main() {
     VideoCapture capture(CAM_PATH);
@@ -32,7 +45,7 @@ int main() {
     // Set the ROI for the image to be the bottom 1/3 of the image.
     Rect roi(0, 2*originalImage.rows/3, originalImage.rows, originalImage.cols/3);
     // Initialize the preprocessing class.
-    PreProcessing process(50, 150, 3, 50, roi);
+    PreProcessing process(CANNY_LOWER_BOUND, CANNY_UPPER_BOUND, CANNY_KERNEL_SIZE, HOUGH_THRESHOLD, roi);
 
     while(true) {
         capture >> originalImage;
