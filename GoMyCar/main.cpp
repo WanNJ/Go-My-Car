@@ -68,7 +68,9 @@ int main() {
             clog << "Line: Y = " << (*iter).slope << "X + " << (*iter).intercept << endl;
         }
         #endif
-    }
 
+        lines.clear();
+        waitKey(1);
+    }
     return 0;
 }
