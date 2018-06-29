@@ -40,20 +40,23 @@ int main() {
 
     // Initialize the used image mat and line vector.
     Mat originalImage;
+    Mat roiImage;
     Mat processedImage;
     vector<NormalLine> lines;
 
     // Set the ROI for the image to be the bottom 1/3 of the image.
     Rect roi(0, 2*originalImage.rows/3, originalImage.rows, originalImage.cols/3);
     // Initialize the preprocessing class.
-    PreProcessing process(CANNY_LOWER_BOUND, CANNY_UPPER_BOUND, CANNY_KERNEL_SIZE, HOUGH_THRESHOLD, roi);
+    PreProcessing process(CANNY_LOWER_BOUND, CANNY_UPPER_BOUND, CANNY_KERNEL_SIZE, HOUGH_THRESHOLD);
 
     while(true) {
         capture >> originalImage;
         if(originalImage.empty())
             break;
 
-        process.allInOnce(originalImage, processedImage, lines);
+        // Get ROI.
+        roiImage = originalImage(roi);
+        process.allInOnce(roiImage, processedImage, lines);
 
         #ifdef _DEBUG
         // Get the original image.

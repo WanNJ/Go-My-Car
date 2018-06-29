@@ -11,26 +11,13 @@ PreProcessing::PreProcessing() {
     cannyUpperBound = 150;
     cannyKernelSize = 3;
     houghThreshold = 50;
-    roi = Rect(0, 0, 0, 0);
 };
 
-PreProcessing::PreProcessing(int cannyLower, int cannyUpper, int cannyKernel, int _houghThreshold, Rect _roi) {
+PreProcessing::PreProcessing(int cannyLower, int cannyUpper, int cannyKernel, int _houghThreshold) {
     cannyLowerBound = cannyLower;
     cannyUpperBound = cannyUpper;
     cannyKernelSize = cannyKernel;
     houghThreshold = _houghThreshold;
-    roi = _roi;
-}
-
-void PreProcessing::getROI(Mat& src, Mat& dst) {
-    if(roi.width != 0)
-        dst = src(roi);
-    else
-        src.copyTo(dst);
-}
-
-void PreProcessing::setROI(Rect _roi) {
-    roi = _roi;
 }
 
 void PreProcessing::grayScalePlusGaussianBlur(Mat& src, Mat& dst) {
@@ -40,9 +27,8 @@ void PreProcessing::grayScalePlusGaussianBlur(Mat& src, Mat& dst) {
 
 void PreProcessing::getLines(Mat& src, Mat& dst, vector<NormalLine>& lines) {
     vector<Vec2f> detectedLines;
-    Mat roiPart = src(roi);
 
-    Canny(roiPart, dst, cannyLowerBound, cannyUpperBound, cannyKernelSize);
+    Canny(dst, dst, cannyLowerBound, cannyUpperBound, cannyKernelSize);
     /**
      * 1: The resolution of the parameter rho in pixels - using 1 pixel.
      * CV_PI/180: The resolution of the parameter theta in radians - using 1 degree.
