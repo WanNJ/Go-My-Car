@@ -39,10 +39,10 @@ void PreProcessing::grayScalePlusGaussianBlur(Mat& src, Mat& dst) {
 }
 
 void PreProcessing::getLines(Mat& src, Mat& dst, vector<NormalLine>& lines) {
-    src(roi).copyTo(dst);
     vector<Vec2f> detectedLines;
+    Mat roiPart = src(roi);
 
-    Canny(dst, dst, cannyLowerBound, cannyUpperBound, cannyKernelSize);
+    Canny(roiPart, dst, cannyLowerBound, cannyUpperBound, cannyKernelSize);
     /**
      * 1: The resolution of the parameter rho in pixels - using 1 pixel.
      * CV_PI/180: The resolution of the parameter theta in radians - using 1 degree.
