@@ -53,3 +53,8 @@ void PreProcessing::getLines(Mat& src, Mat& dst, vector<NormalLine>& lines) {
         lines.push_back(getNormLineFromGeneralForm((*it)[0], (*it)[1]));
     }
 }
+
+void PreProcessing::allInOnce(Mat& src, Mat& dst, vector<NormalLine>& lines) {
+    grayScalePlusGaussianBlur(src, dst);
+    getLines(src, dst, lines);
+}

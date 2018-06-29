@@ -56,6 +56,8 @@ public:
     * @param lanes
     */
     void getLines(Mat& src, Mat& dst, vector<NormalLine>& lines);
+
+    void allInOnce(Mat& src, Mat& dst, vector<NormalLine>& lines);
 };
 
 #endif //GOMYCAR_PREPROCESSING_H
