@@ -47,9 +47,9 @@ public:
     * @param dst The result of canny edge detector will be written into it.
     * @param lanes
     */
-    void getLines(Mat& src, Mat& dst, vector<NormalLine>& lines);
+    void getLineSegments(Mat& src, Mat& dst, vector<LineSegment>& lines);
 
-    void allInOnce(Mat& src, Mat& dst, vector<NormalLine>& lines);
+    void allInOnce(Mat& src, Mat& dst, vector<LineSegment>& lines);
 };
 
 #endif //GOMYCAR_PREPROCESSING_H

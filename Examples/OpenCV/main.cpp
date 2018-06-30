@@ -52,7 +52,7 @@ int main()
 		Mat imgROI=image(roi);
 
 
-		//Canny algorithm
+		// Canny algorithm
 		Mat contours;
 		Canny(imgROI, contours, CANNY_LOWER_BOUND, CANNY_UPPER_BOUND);
 		#ifdef _DEBUG

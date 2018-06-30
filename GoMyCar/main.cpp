@@ -5,34 +5,28 @@
 #include <opencv2/highgui.hpp>
 
 #include "ImgProcessing/preProcessing.h"
-#include "utils/coordinateSystem.h"
 
 // Comment this line at run-time to skip GUI rendering.
 #define _DEBUG
 
 const string CAM_PATH="/dev/video0";
 const string ORIGINAL_WINDOW_NAME="Original Image";
-const string MIDDLE_WINDOW_NAME="Middle Image";
 const string PROCESSED_WINDOW_NAME="Processed Image";
 
 const int BLUR_SIZE = 5;
-const int CANNY_LOWER_BOUND = 50;
+const int CANNY_LOWER_BOUND = 75;
 const int CANNY_UPPER_BOUND = 150;
 const int CANNY_KERNEL_SIZE = 3;
-const int HOUGH_THRESHOLD = 75;
-
-// H is the height of the camera in centimeters.
-const double H = 7.5;
-// f is the focus length of the camera in centimeters.
-const double f = 20;
+const int HOUGH_THRESHOLD = 100;
 
 // TODO How to establish the mapping between photo and the physical world?
 
 int main() {
+    // Change it to capture(CAM_PATH) when using RasPi.
     VideoCapture capture(0);
     // If this fails, try to open as a video camera, through the use of an integer param
     if (!capture.isOpened()) {
-        std::cout << "no capture device :(" << endl;
+        std::cout << "No capture device :(" << endl;
         return -1;
     }
 
@@ -46,7 +40,7 @@ int main() {
     Mat roiImage;
     Mat middleImage;
     Mat processedImage;
-    vector<NormalLine> lines;
+    vector<LineSegment> lines;
 
     // Set the ROI for the image to be the bottom 1/3 of the image.
     Rect roi(0, 2*frameHeight/3, frameWidth, frameHeight/3);
@@ -60,24 +54,23 @@ int main() {
 
         // Get ROI.
         roiImage = originalImage(roi);
-        process.grayScalePlusGaussianBlur(roiImage, middleImage);
-        process.getLines(middleImage, processedImage, lines);
+        process.allInOnce(roiImage, processedImage, lines);
 
         #ifdef _DEBUG
-        // Get the original image.
-        imshow(ORIGINAL_WINDOW_NAME, roiImage);
-        imshow(MIDDLE_WINDOW_NAME, middleImage);
-        imshow(PROCESSED_WINDOW_NAME, processedImage);
-
         // Print out the line
-        vector<NormalLine>::iterator iter;
-        for (iter=lines.begin();iter!=lines.end();iter++) {
-            clog << "Line: Y = " << (*iter).slope << "X + " << (*iter).intercept << endl;
+        vector<LineSegment>::iterator iter;
+        for (iter = lines.begin(); iter != lines.end(); iter++) {
+            line(roiImage, Point((*iter).x0, (*iter).y0), Point((*iter).x1, (*iter).y1), Scalar(0,0,255), 3, CV_AA);
         }
+
+        // Show the image processing results.
+        imshow(ORIGINAL_WINDOW_NAME, roiImage);
+        imshow(PROCESSED_WINDOW_NAME, processedImage);
         #endif
 
         lines.clear();
         waitKey(1);
+//        getchar();
     }
     return 0;
 }
