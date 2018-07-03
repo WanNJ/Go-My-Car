@@ -13,10 +13,14 @@ class CarController {
 private:
     // L is the distance between the two wheels.
     double L;
-    void initialize();
+    double ratioLengthToVel;
+    void initializeGPIO();
 
 public:
-    CarController();
+    explicit CarController(double _L);
+    void reset();
+    void forwardSlowly();
+    void forwardSlowlyByAngularVelocity(double angularVelocity);
 };
 
 

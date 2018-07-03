@@ -4,11 +4,28 @@
 
 #include "CarController.h"
 
-void CarController::initialize() {
+void CarController::initializeGPIO() {
     init();
 }
 
-CarController::CarController() {
-    initialize();
+CarController::CarController(double _L) {
+    // In mm.
+    L = _L;
+    ratioLengthToVel = 1;
+    initializeGPIO();
 }
+
+void CarController::reset() {
+    resetCounter();
+}
+
+void CarController::forwardSlowly() {
+    controlLeft(FORWARD, 5);
+    controlRight(FORWARD, 5);
+}
+
+void CarController::forwardSlowlyByAngularVelocity(double angularVelocity) {
+    double delta_v = angularVelocity * L / ;
+}
+
 
