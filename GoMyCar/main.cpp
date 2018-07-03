@@ -2,10 +2,10 @@
 #include <iostream>
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/highgui.hpp>
 
 #include "ImgProcessing/preProcessing.h"
 #include "CarController/CarController.h"
+#include "PIDController/PIDController.h"
 
 // Comment this line at run-time to skip GUI rendering.
 #define _DEBUG
@@ -61,8 +61,10 @@ int main() {
     PreProcessing process(BLUR_SIZE, CANNY_LOWER_BOUND, CANNY_UPPER_BOUND, CANNY_KERNEL_SIZE, HOUGH_THRESHOLD);
     // Initialize the coordinate system class.
     CoordinateSystem coordSys(FOCUS, HEIGHT, Vec2f(frameWidth/2, -frameHeight/6));
-    // Initialize control system.
-    CarController controller(L, ANGLE_OFFSET);
+    // Initialize Car Control system.
+    CarController carController(L, ANGLE_OFFSET);
+    // Initialize PID Control system.
+    PIDController pidController(2, 45, carController);
 
     double theta = 0;
 
@@ -78,6 +80,9 @@ int main() {
         if(!lines.empty()) {
             theta = coordSys.getTheta(lines.at(0));
         }
+
+        // Translate radians to degrees.
+        pidController.drive(static_cast<int>(theta * 360 / CV_PI));
 
         #ifdef _DEBUG
         // Print out the line
@@ -98,7 +103,6 @@ int main() {
 
         lines.clear();
         waitKey(1);
-//        getchar();
     }
     return 0;
 }

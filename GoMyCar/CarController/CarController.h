@@ -17,6 +17,7 @@ private:
     void initializeGPIO();
 
 public:
+    CarController();
     explicit CarController(double _L, int _angleOffset);
     void reset();
     /**

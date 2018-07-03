@@ -9,6 +9,11 @@ void CarController::initializeGPIO() {
     reset();
 }
 
+CarController::CarController() {
+    L = 160;
+    angleOffset = 0;
+}
+
 CarController::CarController(double _L, int _angleOffset) {
     // In mm.
     L = _L;

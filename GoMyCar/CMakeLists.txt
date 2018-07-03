@@ -6,7 +6,7 @@ find_package(OpenCV REQUIRED)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
-        main.cpp ImgProcessing/preProcessing.cpp ImgProcessing/preProcessing.h utils/coordinateSystem.cpp utils/coordinateSystem.h CarController/CarController.cpp CarController/CarController.h CarController/GPIOlib.h)
+        main.cpp ImgProcessing/preProcessing.cpp ImgProcessing/preProcessing.h Utils/coordinateSystem.cpp Utils/coordinateSystem.h CarController/CarController.cpp CarController/CarController.h CarController/GPIOlib.h PIDController/PIDController.cpp PIDController/PIDController.h)
 
 SET(PROJECT_NAME
         GoMyCar)
