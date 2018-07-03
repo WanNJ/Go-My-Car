@@ -24,6 +24,7 @@ const int HOUGH_THRESHOLD = 100;
 
 // Car Params
 const double L = 160;
+const int ANGLE_OFFSET = -12;
 
 // Camera Params
 const double FOCUS = 0;
@@ -61,7 +62,7 @@ int main() {
     // Initialize the coordinate system class.
     CoordinateSystem coordSys(FOCUS, HEIGHT, Vec2f(frameWidth/2, -frameHeight/6));
     // Initialize control system.
-    CarController controller(L);
+    CarController controller(L, ANGLE_OFFSET);
 
     double theta = 0;
 

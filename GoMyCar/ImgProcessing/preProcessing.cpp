@@ -5,6 +5,13 @@
 #include "preProcessing.h"
 #include <opencv2/imgproc.hpp>
 
+bool PreProcessing::isLineHorizontal(double x0, double y0, double x1, double y1) {
+    if(x0 == x1)
+        return false;
+
+    double slope = y1 - y0 / x1 - x0;
+    return -0.1 < slope && slope < 0.1;
+}
 
 PreProcessing::PreProcessing() {
     blurSize = 3;
@@ -40,10 +47,12 @@ void PreProcessing::getLineSegments(Mat &src, Mat &dst, vector<LineSegment> &lin
     HoughLinesP(dst, detectedLines, 1, CV_PI/180, houghThreshold, 100, 20);
     for(vector<Vec4i>::const_iterator it = detectedLines.begin(); it != detectedLines.end(); it++) {
         // First element is distance rho, second element is angle theta.
-        lines.push_back(LineSegment{static_cast<double>((*it)[0]),
-                                    static_cast<double>((*it)[1]),
-                                    static_cast<double>((*it)[2]),
-                                    static_cast<double>((*it)[3])});
+        if(!isLineHorizontal(static_cast<double>((*it)[0]), static_cast<double>((*it)[1]), static_cast<double>((*it)[2]), static_cast<double>((*it)[3]))) {
+            lines.push_back(LineSegment{static_cast<double>((*it)[0]),
+                                        static_cast<double>((*it)[1]),
+                                        static_cast<double>((*it)[2]),
+                                        static_cast<double>((*it)[3])});
+        }
     }
 }
 

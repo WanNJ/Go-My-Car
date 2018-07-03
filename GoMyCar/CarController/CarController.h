@@ -13,14 +13,16 @@ class CarController {
 private:
     // L is the distance between the two wheels.
     double L;
-    double ratioLengthToVel;
+    int angleOffset;
     void initializeGPIO();
 
 public:
-    explicit CarController(double _L);
+    explicit CarController(double _L, int _angleOffset);
     void reset();
-    void forwardSlowly();
-    void forwardSlowlyByAngularVelocity(double angularVelocity);
+    /**
+     * @param angle in degrees
+     */
+    void forwardSlowlyWithAngle(int angle);
 };
 
 

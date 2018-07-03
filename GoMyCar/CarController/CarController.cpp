@@ -6,26 +6,29 @@
 
 void CarController::initializeGPIO() {
     init();
+    reset();
 }
 
-CarController::CarController(double _L) {
+CarController::CarController(double _L, int _angleOffset) {
     // In mm.
     L = _L;
-    ratioLengthToVel = 1;
+    angleOffset = _angleOffset;
     initializeGPIO();
 }
 
 void CarController::reset() {
+    turnTo(angleOffset);
     resetCounter();
 }
 
-void CarController::forwardSlowly() {
+/**
+ * Positive means left, negative means right.
+ * @param angle
+ */
+void CarController::forwardSlowlyWithAngle(int angle) {
     controlLeft(FORWARD, 5);
     controlRight(FORWARD, 5);
-}
-
-void CarController::forwardSlowlyByAngularVelocity(double angularVelocity) {
-    double delta_v = angularVelocity * L / ;
+    turnTo(-angle + angleOffset);
 }
 
 
