@@ -18,8 +18,6 @@ struct LineSegment {
     double y1;
 };
 
-double cmTopx(double cm);
-
 class CoordinateSystem {
 private:
     // H is the height of the camera in centimeters.

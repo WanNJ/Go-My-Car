@@ -26,12 +26,12 @@ const int HOUGH_THRESHOLD = 100;
 const double L = 160;
 const int ANGLE_OFFSET = -12;
 
-// Camera Params
-const double FOCUS = 0;
-const double HEIGHT = 0;
+// Camera Params, Needs to be calibrated everytime.
+const double FOCUS = 100;
+const double HEIGHT = 100;
 
 // Controller Params
-const double K = 0;
+const double K = 2;
 
 int main() {
     // Change it to capture(CAM_PATH) when using RasPi.

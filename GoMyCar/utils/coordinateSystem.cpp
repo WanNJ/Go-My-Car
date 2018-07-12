@@ -5,10 +5,6 @@
 #include "coordinateSystem.h"
 
 
-double cmTopx(double cm) {
-    return 0;
-}
-
 void CoordinateSystem::moveOriginFromROI2ImgCenter(LineSegment& segment){
     segment.x0 -= roiOrigin2imgOrigin[0];
     segment.y0 -= roiOrigin2imgOrigin[1];
