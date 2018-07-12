@@ -47,6 +47,7 @@ double CoordinateSystem::getTheta(LineSegment lineSegment) {
     LineSegment groundSeg{};
 
     moveOriginFromROI2ImgCenter(lineSegment);
+    // Unable to calibrate focus and height, so ignore.
     transformFromImageToGroundFrame(lineSegment, groundSeg);
     return getAtan2FromLineSegment(groundSeg) - CV_PI / 2;
 }

@@ -24,21 +24,14 @@ const int HOUGH_THRESHOLD = 100;
 
 // Car Params
 const double L = 160;
-const int ANGLE_OFFSET = -12;
+const int ANGLE_OFFSET = 0;
 
 // Camera Params, Needs to be calibrated everytime.
-const double FOCUS = 1000;
+const double FOCUS = 100;
 const double HEIGHT = 100;
 
 // Controller Params
 const double K = 2;
-
-double backTheta(double theta) {
-    if(abs(theta) < 5)
-        return 0;
-
-    return theta - theta / abs(theta) * 5;
-}
 
 int main() {
     // Change it to capture(CAM_PATH) when using RasPi.
@@ -87,7 +80,7 @@ int main() {
         if(!lines.empty()) {
             theta = coordSys.getTheta(lines.at(0));
         } else {
-            theta = backTheta(theta);
+            theta = 0;
         }
 
         // Translate radians to degrees.

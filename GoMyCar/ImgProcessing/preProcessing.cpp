@@ -43,7 +43,7 @@ void PreProcessing::getLineSegments(Mat &src, Mat &dst, vector<LineSegment> &lin
      * 1: The resolution of the parameter rho in pixels - using 1 pixel.
      * CV_PI/180: The resolution of the parameter theta in radians - using 1 degree.
      * houghThreshold: The minimum number of intersections to “detect” a line.
-     * 150: Min Line Length
+     * 120: Min Line Length
      * 10: Max Line Gap
      */
     HoughLinesP(dst, detectedLines, 1, CV_PI/180, houghThreshold, 150, 10);
