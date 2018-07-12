@@ -27,15 +27,22 @@ const double L = 160;
 const int ANGLE_OFFSET = -12;
 
 // Camera Params, Needs to be calibrated everytime.
-const double FOCUS = 100;
+const double FOCUS = 1000;
 const double HEIGHT = 100;
 
 // Controller Params
 const double K = 2;
 
+double backTheta(double theta) {
+    if(abs(theta) < 5)
+        return 0;
+
+    return theta - theta / abs(theta) * 5;
+}
+
 int main() {
     // Change it to capture(CAM_PATH) when using RasPi.
-    VideoCapture capture(0);
+    VideoCapture capture(CAM_PATH);
     // If this fails, try to open as a video camera, through the use of an integer param
     if (!capture.isOpened()) {
         std::cout << "No capture device :(" << endl;
@@ -64,7 +71,7 @@ int main() {
     // Initialize Car Control system.
     CarController carController(L, ANGLE_OFFSET);
     // Initialize PID Control system.
-    PIDController pidController(2, 45, carController);
+    PIDController pidController(K, 45, carController);
 
     double theta = 0;
 
@@ -79,6 +86,8 @@ int main() {
 
         if(!lines.empty()) {
             theta = coordSys.getTheta(lines.at(0));
+        } else {
+            theta = backTheta(theta);
         }
 
         // Translate radians to degrees.
@@ -98,7 +107,7 @@ int main() {
         imshow(PROCESSED_WINDOW_NAME, processedImage);
 
         // Log theta.
-        clog << "Theta: " << theta << endl;
+        clog << "Theta: " << theta * 360 / CV_PI << endl;
         #endif
 
         lines.clear();

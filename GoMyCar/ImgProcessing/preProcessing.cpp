@@ -10,7 +10,7 @@ bool PreProcessing::isLineHorizontal(double x0, double y0, double x1, double y1)
         return false;
 
     double slope = y1 - y0 / x1 - x0;
-    return -0.1 < slope && slope < 0.1;
+    return -0.3 < slope && slope < 0.3;
 }
 
 PreProcessing::PreProcessing() {
@@ -43,10 +43,11 @@ void PreProcessing::getLineSegments(Mat &src, Mat &dst, vector<LineSegment> &lin
      * 1: The resolution of the parameter rho in pixels - using 1 pixel.
      * CV_PI/180: The resolution of the parameter theta in radians - using 1 degree.
      * houghThreshold: The minimum number of intersections to “detect” a line.
+     * 150: Min Line Length
+     * 10: Max Line Gap
      */
-    HoughLinesP(dst, detectedLines, 1, CV_PI/180, houghThreshold, 100, 20);
+    HoughLinesP(dst, detectedLines, 1, CV_PI/180, houghThreshold, 150, 10);
     for(vector<Vec4i>::const_iterator it = detectedLines.begin(); it != detectedLines.end(); it++) {
-        // First element is distance rho, second element is angle theta.
         if(!isLineHorizontal(static_cast<double>((*it)[0]), static_cast<double>((*it)[1]), static_cast<double>((*it)[2]), static_cast<double>((*it)[3]))) {
             lines.push_back(LineSegment{static_cast<double>((*it)[0]),
                                         static_cast<double>((*it)[1]),

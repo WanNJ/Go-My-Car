@@ -33,7 +33,7 @@ void CarController::reset() {
 void CarController::forwardSlowlyWithAngle(int angle) {
     controlLeft(FORWARD, 5);
     controlRight(FORWARD, 5);
-    turnTo(-angle + angleOffset);
+    turnTo(angle + angleOffset);
 }
 
 
