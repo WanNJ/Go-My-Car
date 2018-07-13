@@ -75,6 +75,10 @@ int main() {
 
         // Get ROI.
         roiImage = originalImage(roi);
+
+        // TODO Check ROI origin position. It should be
+        clog << roiImage.size << endl;
+
         process.allInOnce(roiImage, processedImage, lines);
 
         if(!lines.empty()) {

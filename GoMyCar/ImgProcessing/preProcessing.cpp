@@ -47,6 +47,7 @@ void PreProcessing::getLineSegments(Mat &src, Mat &dst, vector<LineSegment> &lin
      * 10: Max Line Gap
      */
     HoughLinesP(dst, detectedLines, 1, CV_PI/180, houghThreshold, 150, 10);
+
     for(vector<Vec4i>::const_iterator it = detectedLines.begin(); it != detectedLines.end(); it++) {
         if(!isLineHorizontal(static_cast<double>((*it)[0]), static_cast<double>((*it)[1]), static_cast<double>((*it)[2]), static_cast<double>((*it)[3]))) {
             lines.push_back(LineSegment{static_cast<double>((*it)[0]),
@@ -55,6 +56,17 @@ void PreProcessing::getLineSegments(Mat &src, Mat &dst, vector<LineSegment> &lin
                                         static_cast<double>((*it)[3])});
         }
     }
+
+//    // Another way.
+//    /**
+//     * image – 8-bit, single-channel binary source image. The image may be modified by the function.
+//     * lines – Output vector of lines. Each line is represented by a two-element vector  (\rho, \theta) .  \rho is the distance from the coordinate origin  (0,0) (top-left corner of the image).  \theta is the line rotation angle in radians ( 0 \sim \textrm{vertical line}, \pi/2 \sim \textrm{horizontal line} ).
+//     * rho – Distance resolution of the accumulator in pixels.
+//     * theta – Angle resolution of the accumulator in radians.
+//     * threshold – Accumulator threshold parameter.
+//     */
+//    HoughLines(dst, detectedLines, 1, CV_PI/180, houghThreshold);
+
 }
 
 void PreProcessing::allInOnce(Mat& src, Mat& dst, vector<LineSegment>& lines) {

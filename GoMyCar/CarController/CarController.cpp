@@ -27,7 +27,7 @@ void CarController::reset() {
 }
 
 /**
- * Positive means left, negative means right.
+ * Negative means left, positive means right.
  * @param angle
  */
 void CarController::forwardSlowlyWithAngle(int angle) {

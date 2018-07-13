@@ -28,7 +28,7 @@ private:
 
     void moveOriginFromROI2ImgCenter(LineSegment& segment);
     void transformFromImageToGroundFrame(LineSegment& imageSeg, LineSegment& groundSeg);
-    double getAtan2FromLineSegment(LineSegment& lineSegment);
+    double getThetaFromLineSegment(LineSegment& lineSegment);
 public:
     CoordinateSystem(const double _H, const double _f, const Vec2f _roiOrigin2imgOrigin) {
         H = _H;

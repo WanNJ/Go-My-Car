@@ -18,23 +18,25 @@ void CoordinateSystem::moveOriginFromROI2ImgCenter(LineSegment& segment){
  * @param groundSeg
  */
 void CoordinateSystem::transformFromImageToGroundFrame(LineSegment &imageSeg, LineSegment &groundSeg) {
-    groundSeg.x0 = H * imageSeg.y0 / f;
-    groundSeg.y0 = H * imageSeg.y0 / imageSeg.x0;
+    groundSeg.x0 = H * imageSeg.x0 / imageSeg.y0;
+    groundSeg.y0 = H * f / imageSeg.y0;
 
-    groundSeg.x1 = H * imageSeg.y1 / f;
-    groundSeg.y1 = H * imageSeg.y1 / imageSeg.x1;
+    groundSeg.x1 = H * imageSeg.x1 / imageSeg.y1;
+    groundSeg.y1 = H * f / imageSeg.y1;
 }
 
 /**
- * The result will always be in [0, PI]
+ * The result will always be in [-PI/2, PI]
  * @param lineSegment
  * @return
  */
-double CoordinateSystem::getAtan2FromLineSegment(LineSegment& lineSegment) {
-    if(lineSegment.y0 >= lineSegment.y1)
-        return atan2(lineSegment.y0 - lineSegment.y1, lineSegment.x0 - lineSegment.x1);
-    else
-        return atan2(lineSegment.y1 - lineSegment.y0, lineSegment.x1 - lineSegment.x0);
+double CoordinateSystem::getThetaFromLineSegment(LineSegment& lineSegment) {
+    if(lineSegment.x0 == lineSegment.x1)
+        return 0;
+    else {
+        double slope = (lineSegment.y1 - lineSegment.y0) / (lineSegment.x1 - lineSegment.x0);
+        return -atan(slope);
+    }
 }
 
 /**
