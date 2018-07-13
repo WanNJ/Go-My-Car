@@ -8,7 +8,7 @@
 #include "PIDController/PIDController.h"
 
 // Comment this line at run-time to skip GUI rendering.
-#define _DEBUG
+// #define _DEBUG
 
 const string CAM_PATH="/dev/video0";
 const string ORIGINAL_WINDOW_NAME="Original Image";
@@ -27,8 +27,8 @@ const double L = 160;
 const int ANGLE_OFFSET = 0;
 
 // Camera Params, Needs to be calibrated everytime.
-const double FOCUS = 100;
-const double HEIGHT = 100;
+const double FOCUS = 2;
+const double HEIGHT = 1;
 
 // Controller Params
 const double K = 2;
@@ -60,7 +60,7 @@ int main() {
     // Initialize the preprocessing class.
     PreProcessing process(BLUR_SIZE, CANNY_LOWER_BOUND, CANNY_UPPER_BOUND, CANNY_KERNEL_SIZE, HOUGH_THRESHOLD);
     // Initialize the coordinate system class.
-    CoordinateSystem coordSys(FOCUS, HEIGHT, Vec2f(frameWidth/2, -frameHeight/6));
+    CoordinateSystem coordSys(HEIGHT, FOCUS, Vec2f(frameWidth/2, -frameHeight/6));
     // Initialize Car Control system.
     CarController carController(L, ANGLE_OFFSET);
     // Initialize PID Control system.
@@ -88,7 +88,7 @@ int main() {
         }
 
         // Translate radians to degrees.
-        pidController.drive(static_cast<int>(theta * 360 / CV_PI));
+        pidController.drive(static_cast<int>(theta * 180 / CV_PI));
 
         #ifdef _DEBUG
         // Print out the line
@@ -105,7 +105,7 @@ int main() {
         #endif
 
         // Log theta.
-        clog << "Theta: " << theta * 360 / CV_PI << endl;
+        clog << "Theta: " << theta * 180 / CV_PI << endl;
 
         lines.clear();
         waitKey(1);

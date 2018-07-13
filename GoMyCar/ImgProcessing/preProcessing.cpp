@@ -9,8 +9,8 @@ bool PreProcessing::isLineHorizontal(double x0, double y0, double x1, double y1)
     if(x0 == x1)
         return false;
 
-    double slope = y1 - y0 / x1 - x0;
-    return -0.3 < slope && slope < 0.3;
+    double slope = (y1 - y0) / (x1 - x0);
+    return -0.1 < slope && slope < 0.1;
 }
 
 PreProcessing::PreProcessing() {
