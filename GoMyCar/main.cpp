@@ -102,10 +102,10 @@ int main() {
         // Show the image processing results.
         imshow(ORIGINAL_WINDOW_NAME, roiImage);
         imshow(PROCESSED_WINDOW_NAME, processedImage);
+        #endif
 
         // Log theta.
         clog << "Theta: " << theta * 360 / CV_PI << endl;
-        #endif
 
         lines.clear();
         waitKey(1);

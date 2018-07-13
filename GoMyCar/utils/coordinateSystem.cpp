@@ -35,7 +35,11 @@ double CoordinateSystem::getThetaFromLineSegment(LineSegment& lineSegment) {
         return 0;
     else {
         double slope = (lineSegment.y1 - lineSegment.y0) / (lineSegment.x1 - lineSegment.x0);
-        return -atan(slope);
+        double alpha = atan(slope);
+        if(alpha > 0)
+            return CV_PI / 2 - alpha;
+        else
+            return - (CV_PI / 2 + alpha);
     }
 }
 
